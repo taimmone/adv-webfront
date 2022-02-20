@@ -12,11 +12,11 @@ import { NEW_NOTIFICATION, REMOVE_NOTIFICATION } from '../constants';
  * @return {Object} action
  */
 export const createNotification = (
-	newNotification = { message: '', isSuccess: false }
-) => ({});
+  newNotification = { message: '', isSuccess: false }
+) => ({ payload: newNotification, type: NEW_NOTIFICATION });
 
 /**
  * @description Action creator that sends a REMOVE_NOTIFICATION-type action
  * @return {Object} action
  */
-export const removeNotification = () => {};
+export const removeNotification = () => ({ type: REMOVE_NOTIFICATION });
