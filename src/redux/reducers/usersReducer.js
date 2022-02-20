@@ -1,11 +1,11 @@
 /** @format */
 
 import {
-	CLEAR_USERS,
-	GET_USER,
-	GET_USERS,
-	REMOVE_USER,
-	UPDATE_USER,
+  CLEAR_USERS,
+  GET_USER,
+  GET_USERS,
+  REMOVE_USER,
+  UPDATE_USER,
 } from '../constants';
 
 /**
@@ -19,6 +19,25 @@ import {
  * @param {Object} action the action that calls the reducer.
  * @returns {Array} new state for products
  */
-const usersReducer = (state = [], action) => {};
+const usersReducer = (state = [], action) => {
+  switch (action.type) {
+    case GET_USER:
+      return [action.payload];
+    case GET_USERS:
+      return action.payload;
+    case CLEAR_USERS:
+      return [];
+    case UPDATE_USER: {
+      const updatedUsers = state.filter(user => user.id !== action.payload.id);
+      updatedUsers.push(action.payload);
+      return updatedUsers;
+    }
+    case REMOVE_USER:
+      return state.filter(user => user.id !== action.payload.id);
+
+    default:
+      return state;
+  }
+};
 
 export default usersReducer;

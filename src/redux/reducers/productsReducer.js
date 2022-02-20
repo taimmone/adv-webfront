@@ -1,11 +1,11 @@
 /** @format */
 
 import {
-	ADD_PRODUCT,
-	DELETE_PRODUCT,
-	GET_PRODUCT,
-	GET_PRODUCTS,
-	UPDATE_PRODUCT,
+  ADD_PRODUCT,
+  DELETE_PRODUCT,
+  GET_PRODUCT,
+  GET_PRODUCTS,
+  UPDATE_PRODUCT,
 } from '../constants';
 
 /**
@@ -19,6 +19,27 @@ import {
  * @param {Object} action the action that calls the reducer.
  * @returns {Array} new state for products
  */
-const productsReducer = (state = [], action) => {};
+const productsReducer = (state = [], action) => {
+  switch (action.type) {
+    case GET_PRODUCT:
+      return [action.payload];
+    case GET_PRODUCTS:
+      return action.payload;
+    case ADD_PRODUCT:
+      return [action.payload, ...state];
+    case UPDATE_PRODUCT: {
+      const updatedProducts = state.filter(
+        product => product.id !== action.payload.id
+      );
+      updatedProducts.push(action.payload);
+      return updatedProducts;
+    }
+    case DELETE_PRODUCT:
+      return state.filter(product => product.id !== action.payload.id);
+
+    default:
+      return state;
+  }
+};
 
 export default productsReducer;

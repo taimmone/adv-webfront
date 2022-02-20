@@ -1,11 +1,11 @@
 /** @format */
 
 import {
-	ADD_CART_ITEM,
-	EMPTY_CART,
-	INIT_CART,
-	REMOVE_CART_ITEM,
-	UPDATE_CART_ITEM_AMOUNT,
+  ADD_CART_ITEM,
+  EMPTY_CART,
+  INIT_CART,
+  REMOVE_CART_ITEM,
+  UPDATE_CART_ITEM_AMOUNT,
 } from '../constants';
 
 /**
@@ -19,6 +19,29 @@ import {
  * @param {Object} action the action that calls the reducer.
  * @returns {Array} new state for cart
  */
-const cartReducer = (state = [], action) => {};
+const cartReducer = (state = [], action) => {
+  switch (action.type) {
+    case INIT_CART:
+      return action.payload ?? state;
+    case ADD_CART_ITEM:
+      return [...state, action.payload];
+    case REMOVE_CART_ITEM:
+      return state.filter(({ product }) => product.id !== action.payload.id);
+    case UPDATE_CART_ITEM_AMOUNT:
+      return state.flatMap(item => {
+        if (item.product.id === action.payload.productId) {
+          const amount = item.quantity + action.payload.amount;
+          if (amount <= 0) return [];
+          return { ...item, quantity: amount };
+        }
+        return item;
+      });
+    case EMPTY_CART:
+      return [];
+
+    default:
+      return state;
+  }
+};
 
 export default cartReducer;
