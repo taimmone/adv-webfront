@@ -23,6 +23,12 @@ const db = {
       name: 'Customer2',
       email: 'customer2@email.com',
       role: 'customer'
+    },
+    {
+      id: 'f9daf8808b2911ec9cbb9fd11be29a90',
+      name: 'Customer3',
+      email: 'customer3@email.com',
+      role: 'customer'
     }
   ],
   products: [

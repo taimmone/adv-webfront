@@ -15,6 +15,14 @@ import {
 
 const JWT_SECRET = 'test-secret';
 const LOGIN_PASSWORD = '1234567890';
+const cookieOptions = {
+  httpOnly: true,
+  path: '/',
+  sameSite: 'strict',
+  secure: false
+};
+
+const expires = new Date('2020-01-01');
 
 const validateOrderItem = item => {
   if (!('product' in item)) return false;
@@ -70,7 +78,11 @@ const getRandomID = () => {
 
 const checkStatus = (req, res, ctx) => {
   const user = getUserFromCookie(req);
-  return res(ctx.cookie('token', getToken(user)), ctx.json({ user }));
+  return res(
+    ctx.cookie('token', getToken(user), cookieOptions),
+    ctx.status(200),
+    ctx.json({ user })
+  );
 };
 
 const registerUser = (req, res, ctx) => {
@@ -101,7 +113,11 @@ const registerUser = (req, res, ctx) => {
     role: 'customer'
   };
 
-  return res(ctx.cookie('token', getToken(user)), ctx.status(201), ctx.json({ user }));
+  return res(
+    ctx.cookie('token', getToken(user), cookieOptions),
+    ctx.status(201),
+    ctx.json({ user })
+  );
 };
 
 const loginUser = (req, res, ctx) => {
@@ -116,7 +132,21 @@ const loginUser = (req, res, ctx) => {
     return respondForbidden(res, ctx, 'Login failed. Check email and password.');
   }
 
-  return res(ctx.cookie('token', getToken(user)), ctx.status(200), ctx.json({ user }));
+  return res(
+    ctx.cookie('token', getToken(user), cookieOptions),
+    ctx.status(200),
+    ctx.json({ user })
+  );
+};
+
+const logOut = (req, res, ctx) => {
+  // Not exactly the same as in the real backend but should be effectively same
+  return res(
+    // reset the cookie value to empty string and set to expire in the past
+    ctx.cookie('token', '', { ...cookieOptions, expires }),
+    ctx.status(200),
+    ctx.json({ message: 'User logged out!' })
+  );
 };
 
 const getProducts = (req, res, ctx) => {
@@ -126,6 +156,67 @@ const getProducts = (req, res, ctx) => {
 const getProduct = (req, res, ctx) => {
   const product = getProductById(req.params.productId);
   if (!product) return respondNotFound(res, ctx);
+  return res(ctx.status(200), ctx.json(product));
+};
+
+const deleteProduct = (req, res, ctx) => {
+  const currentUser = getUserFromCookie(req);
+  if (!isAdmin(currentUser)) return respondForbidden(res, ctx, 'Admin rights required');
+
+  const product = getProductById(req.params.productId);
+  if (!product) return respondNotFound(res, ctx);
+  return res(ctx.status(200), ctx.json(product));
+};
+
+const createProduct = (req, res, ctx) => {
+  const currentUser = getUserFromCookie(req);
+  if (!isAdmin(currentUser)) return respondForbidden(res, ctx, 'Admin rights required');
+
+  const name = req.body?.name ?? null;
+  const price = req.body?.price ?? null;
+  const image = req.body?.image ?? null;
+  const description = req.body?.description ?? null;
+
+  if (name === null) return respondWithError(res, ctx, { name: 'name is required' });
+  if (name.trim() === '') return respondWithError(res, ctx, { name: 'name cannot be empty' });
+  if (price === null) return respondWithError(res, ctx, { price: 'price is required' });
+
+  if (Number.parseFloat(price) <= 0) {
+    return respondWithError(res, ctx, { price: 'price must be a positive number' });
+  }
+
+  const product = { id: getRandomID(), name: name.trim(), price: Number.parseFloat(price) };
+  if (description !== null) product.description = description;
+  if (image !== null) product.image = image;
+
+  return res(ctx.status(201), ctx.json(product));
+};
+
+const updateProduct = (req, res, ctx) => {
+  const currentUser = getUserFromCookie(req);
+  if (!isAdmin(currentUser)) return respondForbidden(res, ctx, 'Admin rights required');
+
+  const product = getProductById(req.params.productId);
+  if (!product) return respondNotFound(res, ctx);
+
+  const name = req.body?.name ?? null;
+  const price = req.body?.price ?? null;
+  const image = req.body?.image ?? null;
+  const description = req.body?.description ?? null;
+
+  if (name !== null && name.trim() === '') {
+    return respondWithError(res, ctx, { name: 'name cannot be empty' });
+  }
+
+  if (price !== null && Number.parseFloat(price) <= 0) {
+    return respondWithError(res, ctx, { price: 'price must be a positive number' });
+  }
+
+  if (name !== null) product.name = name.trim();
+  if (price !== null) product.price = Number.parseFloat(price);
+  if (description !== null) product.description = description;
+  if (image !== null) product.image = image;
+
   return res(ctx.status(200), ctx.json(product));
 };
 
@@ -219,13 +310,13 @@ const createOrder = (req, res, ctx) => {
   }
 
   if (!items.every(validateOrderItem)) {
-    return respondWithError(res, ctx, 'One or more order item are invalid');
+    return respondWithError(res, ctx, 'One or more order items are invalid');
   }
 
   const order = {
     id: getRandomID(),
     customerId: currentUser.id,
-    ...items
+    items
   };
 
   return res(ctx.status(201), ctx.json(order));
@@ -236,11 +327,17 @@ export const handlers = [
   rest.get(/\/api\/check-status/, checkStatus),
   rest.post(/\/api\/register/, registerUser),
   rest.post(/\/api\/login/, loginUser),
+  rest.get(/\/api\/logout/, logOut),
 
   // products
   rest.get(/\/api\/products/, getProducts),
+  rest.post(/\/api\/products/, createProduct),
   rest.get('/api/products/:productId', getProduct),
   rest.get('http://localhost:3001/api/products/:productId', getProduct),
+  rest.put('/api/products/:productId', updateProduct),
+  rest.put('http://localhost:3001/api/products/:productId', updateProduct),
+  rest.delete('/api/products/:productId', deleteProduct),
+  rest.delete('http://localhost:3001/api/products/:productId', deleteProduct),
 
   // users
   rest.get(/\/api\/users/, getUsers),
@@ -252,8 +349,8 @@ export const handlers = [
   rest.delete('http://localhost:3001/api/users/:userId', deleteUser),
 
   // orders
-  rest.get(/\/api\/users/, getOrders),
-  rest.post(/\/api\/users/, createOrder),
-  rest.get('/api/users/:userId', getOrder),
-  rest.get('http://localhost:3001/api/users/:userId', getOrder)
+  rest.get(/\/api\/orders/, getOrders),
+  rest.post(/\/api\/orders/, createOrder),
+  rest.get('/api/orders/:orderId', getOrder),
+  rest.get('http://localhost:3001/api/orders/:orderId', getOrder)
 ];
