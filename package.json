@@ -20,6 +20,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "jsdoc-lint": "npx eslint --no-eslintrc --config ./.jsdoclintrc.json --no-inline-config --ignore-path ./.jsdoclintignore -o jsdoc_report.html -f html .",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "docs": "jsdoc -c jsdoc.conf.json"

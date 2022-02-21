@@ -20,9 +20,12 @@ import { server, rest } from '../../mocks/server';
 
 const order = db.orders[0];
 
+// const mock = new MockAdapter(axios);
+
 let store;
 beforeEach(() => {
 	store = mockStore({});
+	// mock.resetHandlers();
 });
 const testErrorMsg = JSON.stringify(Math.floor(Math.random() * 10000000));
 

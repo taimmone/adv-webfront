@@ -2,6 +2,8 @@
 
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import MockAdapter from 'axios-mock-adapter';
+import axios from '../../../services/api';
 import {
 	addCartItem,
 	decrementCartItem,
@@ -20,9 +22,12 @@ import state from '../../utils/testStoreState';
 const { cart } = state;
 const product = cart[0].product;
 
+const mock = new MockAdapter(axios);
+
 let store;
 beforeEach(() => {
 	store = mockStore({});
+	mock.resetHandlers();
 	localStorage.setItem('cart', JSON.stringify(cart));
 });
 

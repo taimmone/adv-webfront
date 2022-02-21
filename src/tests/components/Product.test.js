@@ -25,6 +25,7 @@ import {
 
 //App-store:
 import state from '../utils/testStoreState';
+import { deleteProduct } from '../../redux/actionCreators/productsActions';
 const { products, admin, guest } = state;
 
 const product = products[0];
@@ -70,6 +71,7 @@ describe('Product-component - UNIT TESTS', () => {
 					'description-element',
 					'price-element',
 					`modify-button-${product.id}`,
+					`delete-button-${product.id}`,
 				],
 				setupConfigPropAdmin
 			);
@@ -86,7 +88,10 @@ describe('Product-component - UNIT TESTS', () => {
 				],
 				setupConfigPropGuest
 			);
-			displayNot([`modify-button-${product.id}`], setupConfigPropGuest);
+			displayNot(
+				[`modify-button-${product.id}`, `delete-button-${product.id}`],
+				setupConfigPropGuest
+			);
 		});
 	});
 	describe('Displaying correct data in elements', () => {
@@ -121,6 +126,16 @@ describe('Product-component - UNIT TESTS', () => {
 			situation: 'Trying to add an item that already exists in cart',
 			config: setupConfigPropGuestExistingCart,
 			userClickTarget: `add-cart-button-${product.id}`,
+		});
+		dispatch({
+			action: deleteProduct,
+			value: product.id,
+			usesThunk: true,
+		}).when({
+			caseNum: 2,
+			situation: 'Trying to delete a product',
+			config: setupConfigPathAdmin,
+			userClickTarget: `delete-button-${product.id}`,
 		});
 	});
 	describe('Other events', () => {

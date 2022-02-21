@@ -14,6 +14,7 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockedUsedNavigate
 }));
+
 /**
  * App specific Helper function that wraps a component inside a React Redux-store provider and a memory router. Used for testing component functionality. MemoryRouter specificly is used when we want there to be initial entries on the path
  * @param {JSX} ui The component that is to be wrapped.
@@ -82,5 +83,6 @@ function renderWithReduxAndRouter (
 
 // re-export everything
 export * from '@testing-library/react';
+
 // override render method
 export { renderWithReduxAndRouter, renderWithReduxAndMemoryRouter };

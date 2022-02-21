@@ -30,12 +30,12 @@ export const defaultReducers = combineReducers({
 
 /**
  * Create a testing store with imported reducers, middleware, and initial state.
- * globals: rootReducer, middllewares
+ * globals: rootReducer, middlewares
  * @param  {object}  initialState - Initial state for the store.
  * @function  storeFactory
  * @returns  {Store} - Redux Store
  */
-export const storeCreator = (reducers = defaultReducers, preloadedState) => {
+export const storeCreator = (reducers = defaultReducers, preloadedState = defaultState) => {
   return createStore(reducers, preloadedState, applyMiddleware(thunk));
 };
 
