@@ -3,6 +3,6 @@ public/
 .vscode/
 test/
 tests/
-coverage/
+index.js
 setup/
 setupTests.js

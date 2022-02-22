@@ -1,9 +1,10 @@
 {
+  "root": true,
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "node": true
   },
-  "extends": ["plugin:jsdoc/recommended"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -12,10 +13,9 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "plugins": ["jsdoc"],
+  "plugins": ["fp"],
+  "noInlineConfig": true,
   "rules": {
-    "jsdoc/require-param-description": "error",
-    "jsdoc/check-types": "error",
-    "jsdoc/require-returns-description": "error"
+    "fp/no-loops": "error"
   }
 }

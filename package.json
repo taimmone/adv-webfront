@@ -20,7 +20,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "jsdoc-lint": "npx eslint --no-eslintrc --config ./.jsdoclintrc.json --no-inline-config --ignore-path ./.jsdoclintignore -o jsdoc_report.html -f html .",
+    "jsdoc-lint": "eslint --no-eslintrc --config ./.jsdoclintrc.json --no-inline-config --ignore-path ./.jsdoclintignore -o jsdoc_report.html -f html .",
+    "react-lint": "eslint --no-eslintrc --config ./.reactlintrc.json --no-inline-config --ignore-path ./.reactlintignore .",
+    "fp-lint": "eslint --no-eslintrc --config ./.fplintrc.json --no-inline-config --ignore-path ./.fplintignore .",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "docs": "jsdoc -c jsdoc.conf.json"
@@ -48,6 +50,8 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "axios-mock-adapter": "^1.20.0",
+    "eslint-plugin-fp": "^2.3.0",
+    "eslint-plugin-jsdoc": "^37.9.4",
     "jsdoc": "^3.6.10",
     "jsonwebtoken": "^8.5.1",
     "msw": "^0.36.8",
