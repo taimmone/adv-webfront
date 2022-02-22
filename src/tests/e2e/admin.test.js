@@ -406,6 +406,4 @@ describe('END-TO-END - ADMIN', () => {
 			await logOut();
 		});
 	});
-	test.todo('Should be able to add new product to the backend');
-	test.todo('Should be able to delete a product from the backend');
 });
