@@ -2,8 +2,7 @@
 
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import MockAdapter from 'axios-mock-adapter';
-import axios from '../../../services/api';
+
 import {
 	NEW_NOTIFICATION,
 	REMOVE_NOTIFICATION,
@@ -16,12 +15,9 @@ import {
 
 const product = db.products[0];
 
-const mock = new MockAdapter(axios);
-
 let store;
 beforeEach(() => {
 	store = mockStore({});
-	mock.resetHandlers();
 });
 
 const newNotification = { message: 'Test-Notification', isSuccess: false };
