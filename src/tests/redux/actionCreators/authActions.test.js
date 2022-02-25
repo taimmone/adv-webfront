@@ -21,7 +21,14 @@ import {
 import { db } from '../../utils/testDb';
 import { server } from '../../mocks/server';
 import { rest } from '../../mocks/server';
-const user = db.users[0];
+const existingUser = db.users[0];
+
+const user = {
+	name: 'test name',
+	email: 'test@email.com',
+	password: 'testPassword',
+	passwordConfirmation: 'testPassword',
+};
 
 let store;
 beforeEach(() => {
@@ -34,13 +41,13 @@ const mockStore = configureMockStore(middlewares);
 describe('Testing thunk action creators', () => {
 	describe('initAuth:', () => {
 		describe('expected actions should be dispatched on successful requests', () => {
-			it('Case 1: user-object is returned', async () => {
+			it('Case 1: existing user is returned', async () => {
 				server.use(
 					rest.get('/api/check-status', (req, res, ctx) => {
 						return res(
 							ctx.status(200),
 							ctx.json({
-								user,
+								user: existingUser,
 							})
 						);
 					})
@@ -48,7 +55,7 @@ describe('Testing thunk action creators', () => {
 				const expectedActions = [
 					{
 						type: INIT_AUTH,
-						payload: user,
+						payload: existingUser,
 					},
 				];
 				return store.dispatch(initAuth()).then(() => {
@@ -98,7 +105,7 @@ describe('Testing thunk action creators', () => {
 		describe('expected actions should be dispatched on successful requests', () => {
 			it('Case 1: user-object is returned', async () => {
 				const logInCreds = {
-					email: user.email,
+					email: existingUser.email,
 					password: 'correctpassword',
 				};
 				// mock.onPost('/api/login').reply(200, { user });
@@ -107,7 +114,7 @@ describe('Testing thunk action creators', () => {
 						return res(
 							ctx.status(200),
 							ctx.json({
-								user,
+								user: existingUser,
 							})
 						);
 					})
@@ -115,7 +122,7 @@ describe('Testing thunk action creators', () => {
 				const expectedActions = [
 					{
 						type: INIT_AUTH,
-						payload: user,
+						payload: existingUser,
 					},
 					{
 						type: NEW_NOTIFICATION,
@@ -131,7 +138,7 @@ describe('Testing thunk action creators', () => {
 		describe('expected actions should be dispatched on unsuccessful attempts', () => {
 			it('Case 1: Backend Error response caught -> NEW_NOTIFICATION', async () => {
 				const logInCreds = {
-					email: user.email,
+					email: existingUser.email,
 					password: 'correctpassword',
 				};
 				server.use(
@@ -173,8 +180,8 @@ describe('Testing thunk action creators', () => {
 			});
 			it(`Case 3: ${invalidAuth.password} -> NEW_NOTIFICATION`, async () => {
 				const logInCreds = {
-					email: user.email,
-					password: 'inc',
+					email: existingUser.email,
+					password: 'bug',
 				};
 				const expectedActions = [
 					{
@@ -285,7 +292,7 @@ describe('Testing thunk action creators', () => {
 			it(`Case 3: ${invalidAuth.password} -> NEW_NOTIFICATION`, async () => {
 				const registerInCreds = {
 					email: user.email,
-					password: 'inc',
+					password: 'bug',
 				};
 				const expectedActions = [
 					{
