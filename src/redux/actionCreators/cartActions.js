@@ -23,14 +23,14 @@ export const initCart = () => {};
 /**
  * @description Action creator that adds a new cart item to local storage.  Dispatches an ADD_CART_ITEM-type action along with product as payload to the frontends redux-stores product-state, as well as a NEW_NOTIFICATION action to the frontends notification-state with a succesful message using cartMsg.add
  * @param {String} product - The product item to add
- * @return {Object} action
+ * @return {Function} thunk
  */
 export const addCartItem = (product) => {};
 
 /**
  * @description Action creator that removes a cart item from local storage.  Dispatches a REMOVE_CART_ITEM-type action along with product as payload to the frontends redux-stores product-state.
  * @param {String} product - The product item to remove from cart
- * @return {Object} action
+ * @return {Object} Action
  */
 export const removeCartItem = (product) => {};
 
