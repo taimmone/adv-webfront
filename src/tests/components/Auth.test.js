@@ -10,31 +10,33 @@ import state from '../utils/testStoreState';
 import { Route } from 'react-router-dom';
 const { admin, guest, visitor, customer } = state;
 
-const component = <Route path='/' element={<Auth authRoles={['admin']} />} />;
+const component = (
+	<Route path='/test' element={<Auth authRoles={['admin']} />} />
+);
 
 const setupConfigRoleValid = config({
 	component,
 	preloadedState: { auth: admin },
 	needsRoutes: true,
-	startingPath: '/',
+	startingPath: '/test',
 });
 const setupConfigRoleInvalid = config({
 	component,
 	preloadedState: { auth: customer },
 	needsRoutes: true,
-	startingPath: '/',
+	startingPath: '/test',
 });
 const setupConfigRoleGuest = config({
 	component,
 	preloadedState: { auth: guest },
 	needsRoutes: true,
-	startingPath: '/',
+	startingPath: '/test',
 });
 const setupConfigRoleUninitialized = config({
 	component,
 	preloadedState: { auth: visitor },
 	needsRoutes: true,
-	startingPath: '/',
+	startingPath: '/test',
 });
 
 describe('TestBoilerPlate-component - UNIT TESTS', () => {

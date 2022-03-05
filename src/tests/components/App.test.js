@@ -10,6 +10,7 @@ import {
 
 //App-store:
 import state from '../utils/testStoreState';
+import { defaultState } from '../utils/testStores';
 
 //Component(s) to test:
 import App from '../../App';
@@ -39,7 +40,7 @@ const adminSpecificComponentPaths = {
 const setupConfig = config({
 	component: <App />,
 	// startingPath: '/',
-	preloadedState: { auth: guest },
+	preloadedState: { ...defaultState, auth: guest },
 });
 describe('App-component - UNIT TESTS', () => {
 	describe('Displaying correct elements', () => {
@@ -56,7 +57,7 @@ describe('App-component - UNIT TESTS', () => {
 			...customerAdminSpecificComponentPaths,
 			...adminSpecificComponentPaths,
 		},
-		preloadedState: { auth: guest },
+		preloadedState: { ...defaultState, auth: guest },
 	});
 	displayingCorrectComponents({
 		mainComponent: <App />,
@@ -69,7 +70,7 @@ describe('App-component - UNIT TESTS', () => {
 			...guestSpecificComponentPaths,
 			...adminSpecificComponentPaths,
 		},
-		preloadedState: { auth: customer, orders },
+		preloadedState: { ...defaultState, auth: customer, orders },
 	});
 	displayingCorrectComponents({
 		mainComponent: <App />,
@@ -82,7 +83,7 @@ describe('App-component - UNIT TESTS', () => {
 			...guestSpecificComponentPaths,
 			...guestCustomerSpecificComponentPaths,
 		},
-		preloadedState: { auth: admin, orders },
+		preloadedState: { ...defaultState, auth: admin, orders },
 	});
 
 	describe('Displaying correct data in elements', () => {});
