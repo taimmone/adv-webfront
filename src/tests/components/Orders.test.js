@@ -21,7 +21,7 @@ import Orders from '../../components/Orders';
 import { getOrders } from '../../redux/actionCreators/ordersActions';
 //App-store:
 import state from '../utils/testStoreState';
-const { admin, orders, customer } = state;
+const { admin, orders, customer, customerOrders } = state;
 /* 
 	If their role is admin, there should be a button  which lets them add a new order 
 	- When that button is clicked, OrderAdder should open. (add-order-component should exist)
@@ -41,7 +41,7 @@ const customerWithOrders = customer;
 
 const setupConfigCustomer = config({
 	component: <Orders />,
-	preloadedState: { auth: customerWithOrders, orders },
+	preloadedState: { auth: customerWithOrders, orders: customerOrders },
 });
 const setupConfigCustomerNoOrders = config({
 	component: <Orders />,
