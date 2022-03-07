@@ -31,7 +31,7 @@ const Navbar = () => {
       {AllLinks[auth.role].map(section => {
         const path = section.toLowerCase();
         return (
-          <Link id={path} to={`/${path}`} data-testid={`${path}-link`}>
+          <Link key={path} to={`/${path}`} data-testid={`${path}-link`}>
             {section}
           </Link>
         );
