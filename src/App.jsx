@@ -24,13 +24,34 @@ import { getProduct } from './redux/actionCreators/productsActions';
 import { getUser } from './redux/actionCreators/usersActions';
 import { initApp } from './redux/actionCreators/appActions';
 const App = () => {
-	return (
-		<div data-testid='app-component'>
-			<footer>
-				<p>Copyright &copy; 2022</p>
-			</footer>
-		</div>
-	);
+  return (
+    <div data-testid="app-component">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products />}>
+          <Route path=":productId" element={<Product />}>
+            <Route path="modify" element={<ProductModifier />} />
+          </Route>
+        </Route>
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/orders" element={<Orders />}>
+          <Route path=":orderId" element={<Order />} />
+        </Route>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/users" element={<Users />}>
+          <Route path=":userId" element={<User />}>
+            <Route path="modify" element={<UserModifier />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <footer>
+        <p>Copyright &copy; 2022</p>
+      </footer>
+    </div>
+  );
 };
 
 export default App;
