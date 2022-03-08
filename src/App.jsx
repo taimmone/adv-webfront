@@ -35,6 +35,7 @@ const App = () => {
   return (
     <div data-testid="app-component">
       <Navbar />
+      <Notification />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />}>
