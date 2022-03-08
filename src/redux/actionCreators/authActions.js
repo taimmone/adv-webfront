@@ -145,7 +145,7 @@ export const register = registerCreds => async dispatch => {
     );
 
   return axios
-    .post('/api/register', registerCreds)
+    .post('/api/register', { name, email, password })
     .then(({ data }) => {
       dispatch({ payload: data.user, type: INIT_AUTH });
       dispatch(
