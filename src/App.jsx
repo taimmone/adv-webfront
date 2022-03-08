@@ -23,7 +23,15 @@ import { getOrder } from './redux/actionCreators/ordersActions';
 import { getProduct } from './redux/actionCreators/productsActions';
 import { getUser } from './redux/actionCreators/usersActions';
 import { initApp } from './redux/actionCreators/appActions';
+
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log('Dispatch initApp()');
+    dispatch(initApp());
+  }, []);
+
   return (
     <div data-testid="app-component">
       <Navbar />
