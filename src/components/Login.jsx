@@ -11,9 +11,9 @@ const Login = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    dispatch(logIn({ email, password }));
     setEmail('');
     setPassword('');
-    dispatch(logIn());
   };
 
   return (
