@@ -27,6 +27,15 @@ import { initApp } from './redux/actionCreators/appActions';
 const App = () => {
   const dispatch = useDispatch();
 
+  const authRoles = {
+    any: ['guest', 'customer', 'admin'],
+    cart: ['guest', 'customer'],
+    orders: ['admin', 'customer'],
+    productModifier: ['admin'],
+    register: ['guest'],
+    users: ['admin'],
+  };
+
   useEffect(() => {
     console.log('Dispatch initApp()');
     dispatch(initApp());
@@ -36,26 +45,49 @@ const App = () => {
     <div data-testid="app-component">
       <Navbar />
       <Notification />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Products />}>
-          <Route path=":productId" element={<Product />}>
-            <Route path="modify" element={<ProductModifier />} />
+      <main>
+        <Routes>
+          <Route index element={<Home />} />
+
+          <Route path="products" element={<Products />}>
+            <Route path=":productId" element={<Product />}>
+              <Route
+                path="modify"
+                element={<Auth authRoles={authRoles.productModifier} />}
+              >
+                <Route index element={<ProductModifier />} />
+              </Route>
+            </Route>
           </Route>
-        </Route>
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/orders" element={<Orders />}>
-          <Route path=":orderId" element={<Order />} />
-        </Route>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/users" element={<Users />}>
-          <Route path=":userId" element={<User />}>
-            <Route path="modify" element={<UserModifier />} />
+
+          <Route path="cart" element={<Auth authRoles={authRoles.cart} />}>
+            <Route index element={<Cart />} />
           </Route>
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+
+          <Route path="orders" element={<Auth authRoles={authRoles.orders} />}>
+            <Route index element={<Orders />} />
+            <Route path=":orderId" element={<Order />} />
+          </Route>
+
+          <Route
+            path="register"
+            element={<Auth authRoles={authRoles.register} />}
+          >
+            <Route index element={<Register />} />
+          </Route>
+
+          <Route path="login" element={<Login />} />
+
+          <Route path="users" element={<Auth authRoles={authRoles.users} />}>
+            <Route index element={<Users />} />
+            <Route path=":userId" element={<User />}>
+              <Route path="modify" element={<UserModifier />} />
+            </Route>
+          </Route>
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
       <footer>
         <p>Copyright &copy; 2022</p>
       </footer>
