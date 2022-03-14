@@ -17,7 +17,7 @@ import App from '../../App';
 
 //Dispatched Actions
 import { initApp } from '../../redux/actionCreators/appActions';
-const { guest, customer, admin, orders } = state;
+const { guest, customer, admin, orders, customerOrders } = state;
 const generalComponentPaths = {
 	'home-component': '/',
 	'products-component': '/products',
@@ -70,7 +70,7 @@ describe('App-component - UNIT TESTS', () => {
 			...guestSpecificComponentPaths,
 			...adminSpecificComponentPaths,
 		},
-		preloadedState: { ...defaultState, auth: customer, orders },
+		preloadedState: { ...defaultState, auth: customer, orders: customerOrders },
 	});
 	displayingCorrectComponents({
 		mainComponent: <App />,
