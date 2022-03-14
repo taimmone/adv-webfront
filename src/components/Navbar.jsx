@@ -28,16 +28,17 @@ const Navbar = () => {
       <Link to="/products" data-testid="products-link">
         Products
       </Link>
-      {AllLinks[auth.role].map(section => {
-        const path = section.toLowerCase();
-        return (
-          <Link key={path} to={`/${path}`} data-testid={`${path}-link`}>
-            {section}
-          </Link>
-        );
-      })}
-      {auth.role !== 'guest' && (
-        <Link to="/" data-testid="logout-link" onClick={logoutHandler}>
+      {auth.role &&
+        AllLinks[auth.role].map(section => {
+          const path = section.toLowerCase();
+          return (
+            <Link key={path} to={`/${path}`} data-testid={`${path}-link`}>
+              {section}
+            </Link>
+          );
+        })}
+      {auth.role && auth.role !== 'guest' && (
+        <Link to="/" onClick={logoutHandler} data-testid="logout-link">
           Logout
         </Link>
       )}
