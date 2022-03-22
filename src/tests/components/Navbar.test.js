@@ -87,13 +87,13 @@ describe('Navbar-component', () => {
 	});
 	describe('Displaying correct roles within parent elements', () => {});
 	describe('Updating values correctly', () => {
-		clicking('home-link', setupConfigGuest).changesLocationTo('/');
-		clicking('products-link', setupConfigGuest).changesLocationTo('/products');
-		clicking('cart-link', setupConfigGuest).changesLocationTo('/cart');
-		clicking('login-link', setupConfigGuest).changesLocationTo('/login');
-		clicking('register-link', setupConfigGuest).changesLocationTo('/register');
-		clicking('orders-link', setupConfigCustomer).changesLocationTo('/orders');
-		clicking('users-link', setupConfigAdmin).changesLocationTo('/users');
+		clicking('home-link', setupConfigGuest).navigatesTo('/');
+		clicking('products-link', setupConfigGuest).navigatesTo('/products');
+		clicking('cart-link', setupConfigGuest).navigatesTo('/cart');
+		clicking('login-link', setupConfigGuest).navigatesTo('/login');
+		clicking('register-link', setupConfigGuest).navigatesTo('/register');
+		clicking('orders-link', setupConfigCustomer).navigatesTo('/orders');
+		clicking('users-link', setupConfigAdmin).navigatesTo('/users');
 	});
 	describe('Dispatching correct actions', () => {
 		describe('Successfull logout', () => {

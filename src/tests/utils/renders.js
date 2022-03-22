@@ -1,18 +1,28 @@
 /** @format */
 
 import { render as rtlRender } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Router } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { defaultReducers } from './testStores';
+import { createMemoryHistory } from 'history';
 
-const mockedUsedNavigate = jest.fn();
 const mockedUsedLocation = jest.fn();
+const mockedUsedNavigate = jest.fn();
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
+	useNavigate: () => mockedUsedNavigate,
+}));
+
 jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockedUsedNavigate
+	// __esModule: true,
+	...jest.requireActual('react-router-dom'),
+	useNavigate: () => mockedUsedNavigate,
+	Navigate: (props) => {
+		mockedUsedNavigate(props);
+		return <div>Mocked Navigate</div>;
+	},
 }));
 
 /**
@@ -21,30 +31,31 @@ jest.mock('react-router-dom', () => ({
  * @param {Object} reduxConfig takes the given store and its initial state if provided as an object. If no store is provided, it creates a store using the defaultReducers as well as the initialState (initialState=undefined by default.)
  * @returns {Function}
  */
-function renderWithReduxAndMemoryRouter (
-  ui,
-  {
-    reducers = defaultReducers,
-    preloadedState,
-    initialPath = '/',
-    store = createStore(reducers, preloadedState, applyMiddleware(thunk)),
-    ...renderOptions
-  } = {}
+function renderWithReduxAndMemoryRouter(
+	ui,
+	{
+		reducers = defaultReducers,
+		preloadedState,
+		initialPath = '/',
+		store = createStore(reducers, preloadedState, applyMiddleware(thunk)),
+		...renderOptions
+	} = {}
 ) {
-  const history = createMemoryHistory();
-  function Wrapper ({ children }) {
-    return (
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[initialPath]}>{children}</MemoryRouter>
-      </Provider>
-    );
-  }
-  return {
-    utils: rtlRender(ui, { wrapper: Wrapper, ...renderOptions }),
-    mockedUsedNavigate,
-    mockedUsedLocation,
-    history
-  };
+	const history = createMemoryHistory();
+
+	function Wrapper({ children }) {
+		return (
+			<Provider store={store}>
+				<MemoryRouter initialEntries={[initialPath]}>{children}</MemoryRouter>
+			</Provider>
+		);
+	}
+	return {
+		utils: rtlRender(ui, { wrapper: Wrapper, ...renderOptions }),
+		mockedUsedNavigate,
+		mockedUsedLocation,
+		history,
+	};
 }
 
 /**
@@ -53,36 +64,35 @@ function renderWithReduxAndMemoryRouter (
  * @param {Object} reduxConfig takes the given store and its initial state if provided as an object. If no store is provided, it creates a store using the defaultReducers as well as the initialState (initialState=undefined by default.)
  * @returns {Function}
  */
-function renderWithReduxAndRouter (
-  ui,
-  {
-    reducers = defaultReducers,
-    preloadedState,
-    initialPath = '/',
-    store = createStore(reducers, preloadedState, applyMiddleware(thunk)),
-    ...renderOptions
-  } = {}
+function renderWithReduxAndRouter(
+	ui,
+	{
+		reducers = defaultReducers,
+		preloadedState,
+		initialPath = '/',
+		store = createStore(reducers, preloadedState, applyMiddleware(thunk)),
+		...renderOptions
+	} = {}
 ) {
-  const history = createMemoryHistory();
+	const history = createMemoryHistory();
 
-  function Wrapper ({ children }) {
-    return (
-      <Provider store={store}>
-        <Router location={history.location} navigator={history}>
-          {children}
-        </Router>
-      </Provider>
-    );
-  }
-  return {
-    utils: rtlRender(ui, { wrapper: Wrapper, ...renderOptions }),
-    mockedUsedNavigate,
-    history
-  };
+	function Wrapper({ children }) {
+		return (
+			<Provider store={store}>
+				<Router location={history.location} navigator={history}>
+					{children}
+				</Router>
+			</Provider>
+		);
+	}
+	return {
+		utils: rtlRender(ui, { wrapper: Wrapper, ...renderOptions }),
+		mockedUsedNavigate,
+		history,
+	};
 }
 
 // re-export everything
 export * from '@testing-library/react';
-
 // override render method
 export { renderWithReduxAndRouter, renderWithReduxAndMemoryRouter };

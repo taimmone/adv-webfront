@@ -86,7 +86,7 @@ describe('Cart-component - UNIT TESTS', () => {
 	describe('Dispatching correct actions', () => {
 		describe('Attempting to order: click order-button', () => {
 			describe('Case 0: Not logged in:', () => {
-				clicking('order-button', fullCart).changesLocationTo('/login');
+				clicking('order-button', fullCart).navigatesTo('/login');
 				dispatch({
 					action: createNotification,
 					usesThunk: true,

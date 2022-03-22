@@ -26,7 +26,7 @@ const setupConfigRoleInvalid = config({
 	needsRoutes: true,
 	startingPath: '/test',
 });
-const setupConfigRoleGuest = config({
+const setupConfigRoleGuestInvalid = config({
 	component,
 	preloadedState: { auth: guest },
 	needsRoutes: true,
@@ -60,8 +60,8 @@ describe('TestBoilerPlate-component - UNIT TESTS', () => {
 			situation: 'auth.role is invalid',
 		}).itShould.navigateTo('/');
 		when({
-			config: setupConfigRoleGuest,
-			situation: 'auth.role is guest',
+			config: setupConfigRoleGuestInvalid,
+			situation: 'auth.role is invalid(guest)',
 		}).itShould.navigateTo('/login');
 	});
 });

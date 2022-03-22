@@ -1,13 +1,13 @@
 /** @format */
-import { fireEvent, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
-import { Routes } from 'react-router-dom';
 import {
 	renderWithReduxAndMemoryRouter,
 	renderWithReduxAndRouter,
 } from './renders';
 import { defaultState, mockStoreCreator } from './testStores';
+import { act } from 'react-dom/test-utils';
+import { fireEvent, waitFor, within } from '@testing-library/react';
+import { Routes } from 'react-router-dom';
 
 let _store;
 
@@ -33,7 +33,7 @@ export const setupWithMock = (
 	if (needsRoutes) {
 		componentWithRoutes = <Routes>{component}</Routes>;
 	}
-	// Mocking dispatch
+	//Mocking dispatch
 	const store = mockStoreCreator(preloadedState);
 	store.dispatch = jest.fn();
 
@@ -56,13 +56,22 @@ export const when = ({ config, situation, caseNum, display }) => {
 				});
 			},
 			navigateTo: function (location) {
-				it(`When ${situation}, it should navigate to ${location}`, () => {
+				it(`When ${situation}, it should navigate to ${location}`, async () => {
 					const { mockedUsedNavigate } = setupWithMock(config);
-					setTimeout(() => {
-						expect(mockedUsedNavigate).toHaveBeenCalledTimes(1);
-						// Ensuring that useNavigate is called with the correct property
-						expect(mockedUsedNavigate.mock.calls[0][0]).toEqual(location);
-					}, 0);
+					// console.log('test', mockedUsedNavigate.mock);
+					// await waitFor(() => {
+					// expect(history.location.pathname).toEqual(location);
+					expect(mockedUsedNavigate).toHaveBeenCalledTimes(1);
+					// expect(mockedUsedNavigate).toHaveBeenCalledTimes(1);
+					const mockCall = mockedUsedNavigate.mock.calls[0][0];
+					if (typeof mockCall === 'object') {
+						expect(mockCall?.to).toEqual(location);
+					} else {
+						expect(mockCall).toEqual(location);
+					}
+					// });
+					// 	// Ensuring that useNavigate is called with the correct property
+					// }, 10);
 				});
 			},
 		},
@@ -134,7 +143,7 @@ export const displayingCorrectComponents = ({
 }) => {
 	describe(`Displaying correct components - ${preloadedState.auth.role}`, () => {
 		if (displayComponents) {
-			it('Should be able to access all role-specific paths', async () => {
+			it(`Should be able to access all role-specific paths`, async () => {
 				let path;
 				for (const componentId in displayComponents) {
 					try {
@@ -159,7 +168,7 @@ export const displayingCorrectComponents = ({
 			});
 		}
 		if (displayNotComponents) {
-			it('Should not be able to access unauthorized paths', async () => {
+			it(`Should not be able to access unauthorized paths`, async () => {
 				let path;
 				for (const componentId in displayNotComponents) {
 					try {
@@ -433,7 +442,12 @@ export const clicking = (id, config, amount = 1) => {
 					config,
 					renderWithReduxAndRouter
 				);
-				userEvent.click(await utils.findByTestId(id));
+
+				// expect(mockedUsedNavigate).toHaveBeenCalledTimes(1);
+
+				await waitFor(async () => {
+					userEvent.click(await utils.findByTestId(id));
+				});
 				// Because we use the router with history, we can access history.location.pathname to ensure the Links to-value is equal to location.
 				expect(history.location.pathname).toEqual(location);
 			});
@@ -456,9 +470,9 @@ export const clicking = (id, config, amount = 1) => {
 						// expect(store.dispatch).toHaveBeenCalledWith(
 						//   myAction({ payload: 'some other text' })
 						// );
-						// Using a bit of a gimmick to ensure the _store is given time to update
-						await new Promise((resolve, reject) => {
-							setTimeout(resolve, 50);
+						//Using a bit of a gimmick to ensure the _store is given time to update
+						await new Promise((res, rej) => {
+							setTimeout(res, 50);
 						});
 
 						const state = _store.getState()[reducerName];
@@ -526,7 +540,7 @@ export const dispatch = ({ action, value, usesThunk }) => {
 			userClickTarget,
 			afterTime = 0,
 		}) => {
-			it(`${caseNum ? `Case ${caseNum}: ` : ''}${situation || ''}${
+			it(`${caseNum ? `Case ${caseNum}: ` : ''}${situation ? situation : ''}${
 				situation && userClickTarget ? ', ' : ''
 			} ${userClickTarget ? userClickTarget + ' clicked' : ''} -> ${
 				action.name
