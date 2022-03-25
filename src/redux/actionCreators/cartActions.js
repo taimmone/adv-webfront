@@ -21,7 +21,6 @@ const cartMsg = {
  */
 export const initCart = () => {
   const cart = JSON.parse(localStorage.getItem('cart'));
-  console.table(cart);
   return { type: INIT_CART, payload: cart };
 };
 
