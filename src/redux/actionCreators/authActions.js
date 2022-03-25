@@ -157,15 +157,13 @@ export const register = registerCreds => async dispatch => {
     })
     .catch(error => {
       if (error.response) {
-        const { data } = error.response;
-        // Todo: Currently uses "data.error.email" because of a test
-        dispatch(
-          createNotification({ message: data.error.email, isSuccess: false })
-        );
-      } else {
-        dispatch(
-          createNotification({ message: error.message, isSuccess: false })
-        );
+        const errorResponse = error.response.data.error;
+        const message =
+          typeof errorResponse === 'string'
+            ? errorResponse
+            : Object.values(errorResponse)[0];
+
+        dispatch(createNotification({ message, isSuccess: false }));
       }
     });
 };
