@@ -33,7 +33,7 @@ const User = ({ providedUser }) => {
         </Link>
       )}
       <p data-testid="email-element">Email: {email}</p>
-      <p data-testid="role-element">Role: {role}</p>
+      <p data-testid="role-element">{role}</p>
       {auth?.id !== getId() && (
         <div>
           <button
