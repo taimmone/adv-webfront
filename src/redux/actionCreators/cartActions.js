@@ -15,7 +15,7 @@ const cartMsg = {
 	update: 'Cart item amount updated.',
 };
 /**
- * @description Action creator that initiates the cart after page is refreshed.  Dispatches an INIT_CART-type action along with pre-existing cart-items stored locally as payload to the frontends redux-stores product-state.
+ * @description Action creator that initiates the cart after page is refreshed.  Sends an INIT_CART-type action along with pre-existing cart-items stored locally as payload to the frontends redux-stores product-state.
  * @return {Object} action
  */
 export const initCart = () => {};
@@ -28,7 +28,7 @@ export const initCart = () => {};
 export const addCartItem = (product) => {};
 
 /**
- * @description Action creator that removes a cart item from local storage.  Dispatches a REMOVE_CART_ITEM-type action along with product as payload to the frontends redux-stores product-state.
+ * @description Action creator that removes a cart item from local storage.  Sends a REMOVE_CART_ITEM-type action along with product as payload to the frontends redux-stores product-state.
  * @param {String} product - The product item to remove from cart
  * @return {Object} Action
  */

@@ -35,7 +35,7 @@ export const validAuth = {
  * 1) INIT_AUTH with user as payload.
  * If the response is not ok, it only dispatches a NEW_NOTIFICATION-type action to the frontends notification state along with the error message from db as an unsuccessfull message.
  *
- * @returns {Function} Thunk
+ * @returns {Function} 
  */
 export const initAuth = () => {};
 /**
@@ -44,7 +44,7 @@ export const initAuth = () => {};
  * 2) succesfull notification with validAuth.welcomeBack as message.
  * If the response is not ok, it only dispatches a NEW_NOTIFICATION-type action to the frontends notification state along with the error message from db as an unsuccessfull notification.
  * @param {Object} logInCreds - The credentials used to login, contains username and password
- * @returns {Function} action
+ * @returns {Function} 
  */
 export const logIn = (logInCreds) => {};
 

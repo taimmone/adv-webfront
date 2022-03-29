@@ -79,14 +79,14 @@ describe('UserModifier-component - UNIT TESTS', () => {
 			});
 
 			test('Case 2: Role changed -> updateUser()', () => {
-				const updatedUser = { ...user, role: 'Customer' };
 				const { store } = setupWithMock(setupConfig);
 				fireEvent.change(screen.getByTestId('role-select'), {
-					target: { value: 'Customer' },
+					target: { value: 'admin' },
 				});
-				expect(screen.getByTestId('role-select')).toHaveValue(updateUser.role);
+				expect(screen.getByTestId('role-select')).toHaveValue("admin");
 				userEvent.click(screen.getByTestId('update-button'));
 				expect(store.dispatch).toHaveBeenCalledTimes(1);
+				const updatedUser = { ...user, role: 'admin' };
 				expect(store.dispatch.mock.calls[0][0].toString()).toBe(
 					updateUser(updatedUser).toString()
 				);
@@ -97,7 +97,7 @@ describe('UserModifier-component - UNIT TESTS', () => {
 		test('Should navigate to users-page ("/users") once user has been modified', () => {
 			const { mockedUsedNavigate } = setupWithMock(setupConfig);
 			fireEvent.change(screen.getByTestId('role-select'), {
-				target: { value: 'Customer' },
+				target: { value: 'admin' },
 			});
 			userEvent.click(screen.getByTestId('update-button'));
 			expect(mockedUsedNavigate).toHaveBeenCalledTimes(1);

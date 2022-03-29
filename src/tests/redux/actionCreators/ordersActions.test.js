@@ -131,7 +131,7 @@ describe('Testing thunk action creators', () => {
 			it('Case 1: updated order from the backend is returned', async () => {
 				server.use(
 					rest.post(`/api/orders`, (req, res, ctx) => {
-						return res(ctx.status(200), ctx.json(order));
+						return res(ctx.status(201), ctx.json(order));
 					})
 				);
 				const expectedActions = [

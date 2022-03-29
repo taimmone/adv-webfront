@@ -231,7 +231,7 @@ describe('Testing thunk action creators', () => {
 			it('Case 1: user-object is returned', async () => {
 				server.use(
 					rest.post('/api/register', (req, res, ctx) => {
-						return res(ctx.status(200), ctx.json({ user }));
+						return res(ctx.status(201), ctx.json({ user }));
 					})
 				);
 				// authService.checkStatus.mockResolvedValueOnce({ user });
