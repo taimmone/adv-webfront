@@ -29,7 +29,12 @@ const Product = ({ providedProduct }) => {
   const handleAddToCart = () => {
     cart.find(({ product }) => product?.id === getId())
       ? dispatch(incrementCartItem(getId()))
-      : dispatch(addCartItem(providedProduct));
+      : dispatch(
+          addCartItem({
+            product: { id: getId(), name, description, price },
+            quantity: 1,
+          })
+        );
   };
 
   return (

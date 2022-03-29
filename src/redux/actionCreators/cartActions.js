@@ -30,10 +30,11 @@ export const initCart = () => {
  * @return {Function} thunk
  */
 export const addCartItem = product => (dispatch, getState) => {
-  const { cart } = getState();
-  const cartItem = { product, quantity: 1 };
-  localStorage.setItem('cart', JSON.stringify([...cart, cartItem]));
-  dispatch({ type: ADD_CART_ITEM, payload: cartItem });
+  let { cart } = getState();
+  if (!cart) cart = JSON.parse(localStorage.getItem('cart'));
+  // const cartItem = { product, quantity: 1 };
+  localStorage.setItem('cart', JSON.stringify([...cart, product]));
+  dispatch({ type: ADD_CART_ITEM, payload: product });
   dispatch(createNotification({ message: cartMsg.add, isSuccess: true }));
 };
 

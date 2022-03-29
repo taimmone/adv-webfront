@@ -63,7 +63,7 @@ export const getOrders = () => dispatch =>
  */
 export const addOrder = newOrder => dispatch =>
   axios
-    .post('/api/orders', newOrder)
+    .post('/api/orders', { items: newOrder })
     .then(({ data }) => {
       dispatch(emptyCart());
       dispatch({ type: ADD_ORDER, payload: data });

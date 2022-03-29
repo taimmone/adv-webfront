@@ -13,9 +13,6 @@ const Orders = () => {
     if (!orders.length) dispatch(getOrders());
   }, []);
 
-  console.table(orders);
-  console.log(orders.length);
-
   if (!orders.length)
     return <div data-testid="no-order-component">No orders</div>;
   return (
