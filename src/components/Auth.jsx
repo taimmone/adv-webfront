@@ -9,6 +9,8 @@ const Auth = ({ authRoles }) => {
   const { auth } = useSelector(state => state);
   const location = useLocation();
 
+  if (!auth.role) return null;
+
   if (authRoles.includes(auth.role)) {
     return (
       <div data-testid="auth-success-component">
