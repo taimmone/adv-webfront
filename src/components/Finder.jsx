@@ -12,10 +12,9 @@ const Finder = ({ type, findHandler }) => {
 
   const findItem = () => state?.find(item => item.id === itemId);
 
-  // console.log(type, itemId, findItem());
-
   useEffect(() => {
     if (!findItem()) {
+      console.log('find item:', itemId);
       dispatch(findHandler(itemId));
     }
   }, [itemId]);
@@ -27,7 +26,7 @@ const Finder = ({ type, findHandler }) => {
   else
     return (
       <div data-testid={`${type}-found-component`}>
-        <Outlet context={findItem()} />
+        <Outlet />
       </div>
     );
 };

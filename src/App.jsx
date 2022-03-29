@@ -32,12 +32,12 @@ const App = () => {
     cart: ['guest', 'customer'],
     orders: ['admin', 'customer'],
     productModifier: ['admin'],
+    login: ['guest'],
     register: ['guest'],
     users: ['admin'],
   };
 
   useEffect(() => {
-    console.log('Dispatch initApp()');
     dispatch(initApp());
   }, []);
 
@@ -49,14 +49,19 @@ const App = () => {
         <Routes>
           <Route index element={<Home />} />
 
-          <Route path="products" element={<Products />}>
-            <Route path=":productId" element={<Product />}>
-              <Route
-                path="modify"
-                element={<Auth authRoles={authRoles.productModifier} />}
-              >
-                <Route index element={<ProductModifier />} />
-              </Route>
+          <Route path="products" element={<Products />} />
+          <Route
+            path="products/:productId"
+            element={
+              <Finder type="product" findHandler={id => getProduct(id)} />
+            }
+          >
+            <Route index element={<Product />} />
+            <Route
+              path="modify"
+              element={<Auth authRoles={authRoles.productModifier} />}
+            >
+              <Route index element={<ProductModifier />} />
             </Route>
           </Route>
 
@@ -66,7 +71,16 @@ const App = () => {
 
           <Route path="orders" element={<Auth authRoles={authRoles.orders} />}>
             <Route index element={<Orders />} />
-            <Route path=":orderId" element={<Order />} />
+          </Route>
+          <Route
+            path="orders/:orderId"
+            element={
+              <Auth authRoles={authRoles.orders}>
+                <Finder type="order" findHandler={id => getOrder(id)} />{' '}
+              </Auth>
+            }
+          >
+            <Route index element={<Order />} />
           </Route>
 
           <Route
@@ -76,13 +90,24 @@ const App = () => {
             <Route index element={<Register />} />
           </Route>
 
-          <Route path="login" element={<Login />} />
+          <Route path="login" element={<Auth authRoles={authRoles.login} />}>
+            <Route index element={<Login />} />
+          </Route>
 
           <Route path="users" element={<Auth authRoles={authRoles.users} />}>
             <Route index element={<Users />} />
-            <Route path=":userId" element={<User />}>
-              <Route path="modify" element={<UserModifier />} />
-            </Route>
+          </Route>
+
+          <Route
+            path="users/:userId"
+            element={
+              <Auth authRoles={authRoles.users}>
+                <Finder type="user" findHandler={id => getUser(id)} />
+              </Auth>
+            }
+          >
+            <Route index element={<User />} />
+            <Route path="modify" element={<UserModifier />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
