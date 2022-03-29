@@ -14,8 +14,6 @@ const UserModifier = () => {
     ...oldUser,
   });
 
-  const [selectedRole, setRole] = useState(oldUser.role);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -32,8 +30,8 @@ const UserModifier = () => {
         <h2 data-testid="name-heading">{oldUser.name}</h2>
         <select
           name="role-select"
-          value={selectedRole}
-          onChange={e => setRole(e.target.value)}
+          value={updatedUser.role}
+          onChange={e => setUser({ updateUser, role: e.target.value })}
           data-testid="role-select"
         >
           <option value="customer">customer</option>
@@ -42,7 +40,7 @@ const UserModifier = () => {
         <button
           type="submit"
           data-testid="update-button"
-          disabled={selectedRole === oldUser.role}
+          disabled={updatedUser.role === oldUser.role}
         >
           Submit
         </button>
