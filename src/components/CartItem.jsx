@@ -25,7 +25,7 @@ const CartItem = ({ item }) => {
     <div data-testid="cart-item-component">
       <p data-testid="item-name">{product.name}</p>
       <p data-testid="item-price">{product.price}</p>
-      <p data-testid="item-amount">{quantity}</p>
+      <p data-testid="item-amount">quantity: {quantity}</p>
       <div>
         <button
           onClick={handleIncrement}
