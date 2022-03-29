@@ -5,70 +5,71 @@ import { useDispatch } from 'react-redux';
 import { register } from '../redux/actionCreators/authActions';
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setConfirmation] = useState('');
-
+  const [newUser, setUser] = useState({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+  });
   const dispatch = useDispatch();
+
+  const handleInput = event => {
+    const { name, value } = event.target;
+    setUser({ ...newUser, [name]: value });
+  };
 
   const handleRegister = event => {
     event.preventDefault();
-    dispatch(register({ name, email, password, passwordConfirmation }));
+    dispatch(register(newUser));
   };
 
   return (
     <div data-testid="register-component">
       <h1>Register</h1>
       <form onSubmit={e => handleRegister(e)} data-testid="register-form">
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            data-testid="name-input"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            name="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            data-testid="email-input"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            data-testid="password-input"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="passwordConfirmation">Password confirmation</label>
-          <input
-            type="password"
-            name="passwordConfirmation"
-            value={passwordConfirmation}
-            onChange={e => setConfirmation(e.target.value)}
-            data-testid="passwordConfirmation-input"
-            required
-          />
-        </div>
-        <button type="submit">Register</button>
+        <FormInput
+          name="name"
+          value={newUser.name}
+          onChange={handleInput}
+          required
+        />
+        <FormInput
+          name="email"
+          value={newUser.email}
+          onChange={handleInput}
+          required
+        />
+        <FormInput
+          name="password"
+          type="password"
+          value={newUser.password}
+          onChange={handleInput}
+          required
+        />
+        <FormInput
+          name="passwordConfirmation"
+          type="password"
+          value={newUser.passwordConfirmation}
+          onChange={handleInput}
+          required
+        />
+        <input type="submit" value="Register" data-testid="register-button" />
       </form>
     </div>
   );
 };
+
+const FormInput = ({ name, type = 'text', ...rest }) => (
+  <div>
+    <input
+      type={type}
+      name={name}
+      placeholder={name.toUpperCase()}
+      id={`${name}-input`}
+      data-testid={`${name}-input`}
+      {...rest}
+    />
+  </div>
+);
 
 export default Register;
