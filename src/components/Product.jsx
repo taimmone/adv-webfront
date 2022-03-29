@@ -21,7 +21,7 @@ const Product = ({ providedProduct }) => {
   const getId = () => providedProduct?.id ?? productId;
 
   const handleDelete = () => {
-    dispatch(deleteProduct());
+    dispatch(deleteProduct(getId()));
   };
   const handleModify = () => {
     navigate(productId ? 'modify' : `${getId()}/modify`);

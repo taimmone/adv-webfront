@@ -21,7 +21,7 @@ const User = ({ providedUser }) => {
   };
 
   const handleDelete = () => {
-    dispatch(removeUser(userId));
+    dispatch(removeUser(getId()));
   };
 
   return (
