@@ -28,21 +28,28 @@ const Navbar = () => {
       <Link to="/products" data-testid="products-link">
         Products
       </Link>
-      {auth.role &&
-        AllLinks[auth.role].map(section => {
-          const path = section.toLowerCase();
-          return (
-            <Link key={path} to={`/${path}`} data-testid={`${path}-link`}>
-              {section}
-            </Link>
-          );
-        })}
+      {!auth.role
+        ? AllLinks['guest'].map(section => (
+            <NavBarLink key={section} section={section} />
+          ))
+        : AllLinks[auth.role].map(section => (
+            <NavBarLink key={section} section={section} />
+          ))}
       {auth.role && auth.role !== 'guest' && (
         <Link to="/" onClick={logoutHandler} data-testid="logout-link">
           Logout
         </Link>
       )}
     </nav>
+  );
+};
+
+const NavBarLink = ({ section }) => {
+  const path = section.toLowerCase();
+  return (
+    <Link key={path} to={`/${path}`} data-testid={`${path}-link`}>
+      {section}
+    </Link>
   );
 };
 
