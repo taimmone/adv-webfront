@@ -9,7 +9,7 @@ import { ADD_ORDER, CLEAR_ORDERS, GET_ORDER, GET_ORDERS } from '../constants';
  * 3) CLEAR_ORDERS: Removes the orders from the state
  * 4) ADD_ORDER: Adds the order to the state by placing it as the last entry.
  * @param {Array} state old state of orders.
- * @param {Object} action the action that calls the reducer.
+ * @param {object} action the action that calls the reducer.
  * @returns {Array} new state for orders
  */
 const ordersReducer = (state = [], action) => {

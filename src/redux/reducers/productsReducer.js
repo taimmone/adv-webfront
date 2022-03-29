@@ -16,7 +16,7 @@ import {
  * 4) UPDATE_PRODUCT: Updates the order in the state and places it as its last entry.
  * 5) DELETE_PRODUCT: Deletes the product from the array.
  * @param {Array} state old state of products.
- * @param {Object} action the action that calls the reducer.
+ * @param {object} action the action that calls the reducer.
  * @returns {Array} new state for products
  */
 const productsReducer = (state = [], action) => {
