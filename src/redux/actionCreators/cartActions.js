@@ -31,8 +31,9 @@ export const initCart = () => {
  */
 export const addCartItem = product => (dispatch, getState) => {
   const { cart } = getState();
-  localStorage.setItem('cart', JSON.stringify([...cart, product]));
-  dispatch({ type: ADD_CART_ITEM, payload: product });
+  const cartItem = { product, quantity: 1 };
+  localStorage.setItem('cart', JSON.stringify([...cart, cartItem]));
+  dispatch({ type: ADD_CART_ITEM, payload: cartItem });
   dispatch(createNotification({ message: cartMsg.add, isSuccess: true }));
 };
 
