@@ -28,8 +28,8 @@ const Product = ({ providedProduct }) => {
   };
   const handleAddToCart = () => {
     cart.find(({ product }) => product?.id === getId())
-      ? dispatch(incrementCartItem())
-      : dispatch(addCartItem());
+      ? dispatch(incrementCartItem(getId()))
+      : dispatch(addCartItem(providedProduct));
   };
 
   return (
