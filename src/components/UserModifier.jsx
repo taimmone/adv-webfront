@@ -31,7 +31,7 @@ const UserModifier = () => {
         <select
           name="role-select"
           value={updatedUser.role}
-          onChange={e => setUser({ updateUser, role: e.target.value })}
+          onChange={e => setUser({ ...updatedUser, role: e.target.value })}
           data-testid="role-select"
         >
           <option value="customer">customer</option>
