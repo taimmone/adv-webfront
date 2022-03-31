@@ -45,7 +45,7 @@ export const removeCartItem = product => {
   const cart = JSON.parse(localStorage.getItem('cart'));
   localStorage.setItem(
     'cart',
-    cart.filter(item => item.product.id !== product.id)
+    JSON.stringify(cart.filter(item => item.product.id !== product.id))
   );
   return { type: REMOVE_CART_ITEM, payload: product };
 };
@@ -62,7 +62,7 @@ export const incrementCartItem = productId => (dispatch, getState) => {
   });
   dispatch(createNotification({ message: cartMsg.update, isSuccess: true }));
   const { cart } = getState();
-  localStorage.setItem('cart', cart);
+  localStorage.setItem('cart', JSON.stringify(cart));
 };
 
 /**
@@ -78,7 +78,7 @@ export const decrementCartItem = productId => (dispatch, getState) => {
   });
   dispatch(createNotification({ message: cartMsg.update, isSuccess: true }));
   const { cart } = getState();
-  localStorage.setItem('cart', cart);
+  localStorage.setItem('cart', JSON.stringify(cart));
 };
 
 /**
